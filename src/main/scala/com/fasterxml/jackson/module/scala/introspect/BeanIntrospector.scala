@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.scala.util.ClassW
 
 import scala.annotation.tailrec
-import scala.reflect.{ClassTag, NameTransformer}
+import scala.reflect.NameTransformer
 
 //TODO: This might be more efficient/type safe if we used Scala reflection here
 //but we have to support 2.9.x and 2.10.x - once the scala reflection APIs
@@ -41,8 +41,6 @@ object BeanIntrospector {
     val names = JavaParameterIntrospector.getCtorParamNames(ctor)
     names.map(NameTransformer.decode)
   }
-
-  def apply[T: ClassTag]: BeanDescriptor = apply(implicitly[ClassTag[T]].runtimeClass)
 
   def apply[T <: AnyRef](cls: Class[_]) = {
 
