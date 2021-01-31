@@ -52,21 +52,25 @@ object BeanIntrospector {
     @tailrec
     def findConstructorParam(c: Class[_], name: String): Option[ConstructorParameter] = {
       //c can be null if we're asked for the superclass of Object or AnyRef
-      if (c == null || c == classOf[AnyRef]) return None
-      val primaryConstructor = c.getConstructors.headOption
-      val debugCtorParamNames = primaryConstructor.toIndexedSeq.flatMap(getCtorParams)
-      val index = debugCtorParamNames.indexOf(name)
-      val companion = findCompanionObject(c)
-      if (index >= 0) {
-        Some(ConstructorParameter(primaryConstructor.get, index, findConstructorDefaultValue(companion, index)))
+      if (c == null || c == classOf[AnyRef]) {
+        None
       } else {
-        findConstructorParam(c.getSuperclass, name)
+        //try to use constructor with most parameters to avoid https://github.com/FasterXML/jackson-module-scala/issues/330
+        val primaryConstructor = c.getConstructors.sortBy(c => -c.getParameterCount).headOption
+        val debugCtorParamNames = primaryConstructor.toIndexedSeq.flatMap(getCtorParams)
+        val index = debugCtorParamNames.indexOf(name)
+        val companion = findCompanionObject(c)
+        if (index >= 0) {
+          Some(ConstructorParameter(primaryConstructor.get, index, findConstructorDefaultValue(companion, index)))
+        } else {
+          findConstructorParam(c.getSuperclass, name)
+        }
       }
     }
 
     def findConstructorDefaultValue(maybeCompanion: Option[AnyRef], index: Int): Option[() => AnyRef] = {
       val methodName = "$lessinit$greater$default$" + (index + 1)
-      maybeCompanion.flatMap(companion => companion.getClass.getMethods.toStream.collectFirst {
+      maybeCompanion.flatMap(companion => companion.getClass.getMethods.collectFirst {
         case method if method.getName == methodName && method.getParameterTypes.length == 0 =>
           () => method.invoke(companion)
       })
