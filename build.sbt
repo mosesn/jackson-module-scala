@@ -1,5 +1,4 @@
 import java.io.File
-import com.typesafe.tools.mima.core._
 
 // Basic facts
 name := "jackson-module-scala"
@@ -7,8 +6,6 @@ name := "jackson-module-scala"
 organization := "com.fasterxml.jackson.module"
 
 scalaVersion := "3.0.0-RC1"
-
-mimaPreviousArtifacts := Set(organization.value %% name.value % "2.12.1")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -51,7 +48,7 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.datatype" % "jackson-datatype-jdk8" % jacksonVersion % Test,
   "com.fasterxml.jackson.module" % "jackson-module-jsonSchema" % jacksonJsonSchemaVersion % Test,
   "io.swagger" % "swagger-core" % "1.6.2" % Test,
-  "org.scalatest" %% "scalatest" % "3.2.4" % Test
+  "org.scalatest" %% "scalatest" % "3.2.5" % Test
 )
 
 // build.properties
@@ -66,11 +63,3 @@ resourceGenerators in Compile += Def.task {
 enablePlugins(SiteScaladocPlugin)
 enablePlugins(GhpagesPlugin)
 git.remoteRepo := "git@github.com:FasterXML/jackson-module-scala.git"
-
-mimaBinaryIssueFilters ++= Seq(
-  ProblemFilters.exclude[ReversedMissingMethodProblem]("com.fasterxml.jackson.module.scala.util.ClassW.isScalaObject"),
-  ProblemFilters.exclude[IncompatibleResultTypeProblem]("com.fasterxml.jackson.module.scala.deser.UntypedObjectDeserializerResolver.findBeanDeserializer"),
-  ProblemFilters.exclude[MissingClassProblem]("com.fasterxml.jackson.module.scala.deser.UntypedObjectDeserializer*"),
-  ProblemFilters.exclude[DirectMissingMethodProblem]("com.fasterxml.jackson.module.scala.introspect.BeanIntrospector.apply"),
-  ProblemFilters.exclude[DirectMissingMethodProblem]("com.fasterxml.jackson.module.scala.introspect.PropertyDescriptor.findAnnotation")
-)
