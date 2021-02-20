@@ -11,6 +11,8 @@ language: scala
 scala:
   - 3.0.0-RC1
 
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test mimaReportBinaryIssues
 after_success:
   - >
     test "${TRAVIS_PULL_REQUEST}" = 'false' && test "${SONATYPE_PUBLISH}" = 'true' &&
