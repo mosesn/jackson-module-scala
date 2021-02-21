@@ -51,6 +51,12 @@ class SeqDeserializerTest extends DeserializerTest {
     result should equal (listScala)
   }
 
+  it should "deserialize a list into an immutable Array" in {
+    val result = deserialize(listJson, new TypeReference[IArray[Int]]{})
+    result shouldBe an[IArray[Int]]
+    result should equal (listScala)
+  }
+
   it should "deserialize a list into an immutable LazyList" in {
     import overrides._
     val result = deserialize(listJson, classOf[LazyList[Int]])
