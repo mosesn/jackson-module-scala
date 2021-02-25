@@ -1,8 +1,8 @@
 package com.fasterxml.jackson.module.scala.introspect
 
-import java.lang.reflect.{Constructor, Field, Method, Parameter}
-
 import com.thoughtworks.paranamer.{BytecodeReadingParanamer, CachingParanamer}
+
+import java.lang.reflect.{Constructor, Field, Method, Parameter}
 
 private[introspect] object JavaParameterIntrospector {
 

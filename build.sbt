@@ -24,7 +24,7 @@ scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 //scalacOptions in (Compile, compile) += "-Xfatal-warnings"
 
 unmanagedSourceDirectories in Compile += {
-  val suffix = if (isDotty.value) "3.0" else s"2.${scalaMajorVersion.value}"
+  val suffix = if (isDotty.value) "2.13" else s"2.${scalaMajorVersion.value}"
   (baseDirectory in LocalRootProject).value / "src" / "main" / s"scala-${suffix}"
 }
 
