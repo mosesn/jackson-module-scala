@@ -7,7 +7,9 @@ import scala.util.Try
 trait ClassW extends PimpedType[Class[_]] {
 
   def extendsScalaClass: Boolean = {
-    ClassW.productClass.isAssignableFrom(value) || isScalaObject
+    ClassW.productClass.isAssignableFrom(value) ||
+      ClassW.anyValClass.isAssignableFrom(value) ||
+      isScalaObject
   }
 
   def hasSignature: Boolean = {
@@ -28,6 +30,7 @@ trait ClassW extends PimpedType[Class[_]] {
 
 object ClassW {
   val productClass = classOf[Product]
+  val anyValClass = classOf[AnyVal]
 
   def apply(c: => Class[_]): ClassW = new ClassW {
     lazy val value = c
