@@ -5,7 +5,7 @@ name := "jackson-module-scala"
 
 organization := "com.fasterxml.jackson.module"
 
-scalaVersion := "3.0.0-RC1"
+scalaVersion := "3.0.0-RC2"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
